@@ -1,0 +1,100 @@
+relative layout'ta bileşenler birbirine bağlıdır
+match parent bir üstteki layout'un verdiği alanı komple kaplar
+wrap content sadece içerik kadar alan kaplar, Butonun içinde bir text varsa sadece o kadar alan kaplar
+android 6.0 ve üzerinde relative layout'ta layout_alignParentLeft ve layout_marginLeft bulunmasına gerek yoktur
+
+Linear layout'ta bileşenler üst üste veya alt alta sırayla yerleşirler
+Linear Layout(vertical) : bileşenler alt alta sıralanırlar -wrap content olsalar bile-
+Linear Layout(horizontal) : bileşenler yan yana sıralanırlar
+Bir layout'un içinde birden fazla layout kullanılabilir
+
+diyelimki benim horizontal linear layout'um var ve 2 bileşenim var
+ben bunları %30 ve %70 genişlikte olacak şekilde sıralanmasını istiyorum
+sırayla bileşenleri seçer ve layout_width değerini 0dp yapar
+layout_weight değerini ise 30 ila 70 yaparım
+
+strings.xml içine stringlerimi yazar uygulamada kullanırım
+eğer bunu yapmadan direk dizayn sırasında string atarsam bu hardcoded olur ki bu önerilmez
+ayrıca strings.xml dosyasını açında yukarıdan open editör dersek buraya farklı dillerde stringlerin karşılıklarını ekleyebiliriz
+
+color
+
+telefonu yan çevirinde dizaynımızın nasıl görüneceğini görmek istersek, design sekmesine gelip telefon sallama simgesine tıklarız.
+ben dersem ki cihazım yan çevrilince farklı bir dizayn gösterilsin -benim özel yaptığım- bunun içinde bir yol var. telefon sallama simgesine basılır, "create landscape variation" seçeneği seçilir
+
+düşük bir versiyonda material design nasıl kullanılır? :
+app seviyesindeki gradle dosyasına bakılır ve min max sdk versiyon değerleri öğrenilir
+androidmanifest.xml dosyası açılır
+<application> üzerine hemen bu eklenir
+<uses-sdk android:minSdkVersion="16" android:maxSdkVersion="26"/>
+16 ve 26 öğrendiğim değerler
+
+action bar'ı kaldırmak:
+bir üsttekini yapılmış sayarsak-
+Theme.AppCompat.Light.DarkActionBar -> Theme.AppCompat.Light.NoActionBar
+
+ikon eklemek
+drawable > sağ klik > new > vector asset 
+
+drawable içindeki logo.xml fillcolor, #FFFFFF %100 opak beyaz
+açık renkli barlariçin #8A000000 %54 opak siyah
+
+<Toolbar> tagı api 21 ve üzerinde vardır
+daha aşağısında kullanmak için : android.support.v7.widget.Toolbar
+import edilirken; 
+import android.widget.Toolbar;  X değil
+import android.support.v7.widget.Toolbar; bu olmalı
+
+
+Linear Layoutta orientation default olarak horizontal, portrait modda uygulama geliştirmek için ayrıca belirtmek gerekiyor
+yoksa eklediklerimiz yanyana gelir, biz alt alta gelmesini isterken
+
+menü gösterimi:
+ifRoom : yer varsa ikonu barda göster 
+always : her zaman ikonu barda göster
+withText : her zaman yazısını menüde göster
+
+aşağıdan çıkarn bilgilendirme barına snackbar denir
+
+
+submenu : menüdeki bir butona bastığımızda açılan başka bir menudur
+submenu içine checkbox koymak için şunları eklememiz gerekir
+android:checkable="true" -> checkbox gelsin mi?
+android:checked="true"   -> default olarak ne gelsin
+
+paddinbottom 24dp, kuraldır
+
+yeni birkaç tasarım ögeleri öğrendim
+navigation view, DrawerLayout
+
+bu view'ı eklemek için
+android.support.design.widget.NavigationView
+gradle app dosyasına bunu eklemen gerekiyor : compile 'com.android.support:design:26.1.0'
+bu versiyon senin appCompat kütüphanen ile aynı olmak zorunda
+
+textsize'da her zaman sp kullan
+
+recyclerview ve cardview kullanabilmek için gradle.app dosyasına şu kodları eklemek gerekir:
+compile 'com.android.support:recyclerview-v7:26.1.0'
+compile 'com.android.support:cardview-v7:26.1.0'
+tabi daha sonra senkronize etmekte gerekir
+(versiyon numarası appcompat ile aynı olacak)
+
+what is adapter in android ?
+a bridge between adapterView and underlying data for that view
+onCreateViewHolder metodu -> recyclerview item'ı viewHolder içine koyar
+viewHolder(inner) class'ı içinde gelen değişkenleri burada id'ye göre bulur ve tanımlarız
+
+recyclerview uzun listedeki itemlerin gösterilmesi için tasarlanmıştır. 100 satır içerik göstereceğimizi varsayalım. bunun için 100 farklı tanımlama yapmak gerekmiyor. ki zaten bu çok büyük hafıza kullanımı demek
+
+ayrıca 10 tane falan item ortalama bir cihazın ekranına sığabilir. hem bu view sayesinde 10 kata kadar hız kazanabiliriz.
+
+recyclerview'da ekranı kaydırdığımızda yeni satırlar gelirken eski satırlar geri dönüştürülür
+
+getItemCount metodu ise ekrandaki görünecek satır sayısını belirler
+
+dp: device independent pixel
+uzunluk bir şekilde kendini benzetiyor
+px: sabit uzunluk
+px -> düşük çözünürlüklü ekranda büyük görünür, büyük çözünürlüklü ekranda küçük görünür
+dp -> telefon çözünürlüğü değişse bile yine de kendini uydurur, mantıklı bir görüntü oluşturmaya çalışır
